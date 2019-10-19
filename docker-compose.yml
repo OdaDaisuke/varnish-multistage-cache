@@ -1,0 +1,30 @@
+version: '2'
+
+services:
+  cache_server:
+    build:
+      context: ./cache_server/
+    container_name: varnish
+    depends_on:
+      - app_server
+    ports:
+      - 6082:6082
+    links:
+      - app_server
+  app_server:
+    image: lkwg82/h2o-http2-server
+    volumes:
+      - ./app_server/h2o:/etc/h2o
+      - ./app_server/log:/var/log/h2o
+      - ./app_server/public:/var/www/html
+    container_name: h2o
+    ports:
+      - 8080:8080
+    restart: always
+    cap_add:
+       - setuid
+       - setgid
+       - chown
+       - sys_admin
+    cap_drop:
+       - ALL

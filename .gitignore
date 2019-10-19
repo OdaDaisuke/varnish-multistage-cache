@@ -1,0 +1,4 @@
+app_server/h2o
+app_server/log
+*.swp
+.DS_Store
